@@ -1,274 +1,274 @@
-# Quotio - Project Overview and Product Requirements Document (PRD)
+# Quotio - 项目概述和产品需求文档 (PRD)
 
-> **Last Updated**: December 27, 2024  
-> **Version**: 1.0.0  
-> **Platform**: macOS 15.0+ (Sequoia)
-
----
-
-## Table of Contents
-
-1. [Project Purpose](#project-purpose)
-2. [Target Users](#target-users)
-3. [Key Features](#key-features)
-4. [Supported AI Providers](#supported-ai-providers)
-5. [Compatible CLI Agents](#compatible-cli-agents)
-6. [App Modes](#app-modes)
-7. [System Requirements](#system-requirements)
+> **最后更新**: 2024年12月27日
+> **版本**: 1.0.0
+> **平台**: macOS 15.0+ (Sequoia)
 
 ---
 
-## Project Purpose
+## 目录
 
-Quotio is a native macOS application that serves as the **command center for AI coding assistants**. It provides a graphical user interface for managing **CLIProxyAPI** - a local proxy server that powers AI coding agents.
-
-### Core Goals
-
-1. **Centralized Account Management**: Manage multiple AI provider accounts from different services in one unified interface.
-2. **Quota Tracking**: Monitor API usage and quotas across all connected accounts with real-time visual feedback.
-3. **CLI Tool Configuration**: Auto-detect and configure popular AI coding CLI tools to route through the centralized proxy.
-4. **Seamless Integration**: Provide menu bar integration for quick status checks without interrupting workflow.
-
-### Problem Statement
-
-Developers using AI coding assistants often need to:
-- Manage multiple accounts across different AI providers
-- Track quota usage to avoid service interruptions
-- Configure multiple CLI tools with consistent settings
-- Monitor real-time usage statistics
-
-Quotio solves these challenges by providing a unified management layer with automatic configuration and quota tracking.
+1. [项目目的](#project-purpose)
+2. [目标用户](#target-users)
+3. [关键功能](#key-features)
+4. [支持的 AI 提供商](#supported-ai-providers)
+5. [兼容的 CLI 代理](#compatible-cli-agents)
+6. [应用模式](#app-modes)
+7. [系统要求](#system-requirements)
 
 ---
 
-## Target Users
+## 项目目的
 
-### Primary Users
+Quotio 是一个原生 macOS 应用，作为 **AI 编码助手的指挥中心**。它为管理 **CLIProxyAPI** 提供图形用户界面 - CLIProxyAPI 是一个为 AI 编码代理提供支持的本地代理服务器。
 
-1. **Professional Developers**: Engineers who use AI coding assistants daily and need to manage multiple accounts or team allocations.
+### 核心目标
 
-2. **Power Users**: Developers who work with multiple AI providers and need centralized quota monitoring.
+1. **集中账户管理**: 在一个统一界面中管理来自不同服务的多个 AI 提供商账户。
+2. **配额跟踪**: 通过实时视觉反馈监控所有连接账户的 API 使用和配额。
+3. **CLI 工具配置**: 自动检测并配置流行的 AI 编码 CLI 工具以通过集中代理路由。
+4. **无缝集成**: 提供菜单栏集成以快速检查状态而不中断工作流。
 
-3. **Team Leads/DevOps**: Personnel responsible for managing AI tool access and monitoring usage across accounts.
+### 问题陈述
 
-### User Personas
+使用 AI 编码助手的开发人员经常需要：
+- 管理不同 AI 提供商的多个账户
+- 跟踪配额使用以避免服务中断
+- 使用一致的设置配置多个 CLI 工具
+- 监控实时使用统计
 
-| Persona | Use Case | Key Needs |
+Quotio 通过提供统一的管理层、自动配置和配额跟踪来解决这些挑战。
+
+---
+
+## 目标用户
+
+### 主要用户
+
+1. **专业开发人员**: 每天使用 AI 编码助手并需要管理多个账户或团队分配的工程师。
+
+2. **高级用户**: 与多个 AI 提供商合作并需要集中配额监控的开发人员。
+
+3. **团队负责人/DevOps**: 负责管理 AI 工具访问和监控账户使用情况的人员。
+
+### 用户角色
+
+| 角色 | 使用场景 | 关键需求 |
 |---------|----------|-----------|
-| Solo Developer | Uses 2-3 AI tools daily | Quota tracking, easy setup |
-| Freelancer | Multiple client accounts | Account switching, usage monitoring |
-| Team Lead | Manages team quotas | Dashboard overview, notifications |
-| DevOps Engineer | Infrastructure management | Proxy configuration, API key management |
+| 独立开发人员 | 每天使用 2-3 个 AI 工具 | 配额跟踪、简单设置 |
+| 自由职业者 | 多个客户账户 | 账户切换、使用监控 |
+| 团队负责人 | 管理团队配额 | 仪表板概览、通知 |
+| DevOps 工程师 | 基础设施管理 | 代理配置、API 密钥管理 |
 
 ---
 
-## Key Features
+## 关键功能
 
-### Multi-Provider Support
+### 多提供商支持
 
-Connect and manage accounts from multiple AI providers through a unified interface:
-- OAuth-based authentication for most providers
-- Service account JSON import for Vertex AI
-- CLI-based authentication for GitHub Copilot and Kiro
-- Browser session integration for Cursor
+通过统一界面连接和管理来自多个 AI 提供商的账户：
+- 大多数提供商基于 OAuth 的认证
+- Vertex AI 的服务账户 JSON 导入
+- GitHub Copilot 和 Kiro 基于 CLI 的认证
+- Cursor 的浏览器会话集成
 
-### Quota Tracking
+### 配额跟踪
 
-Visual quota monitoring with intelligent notifications:
-- Per-account quota breakdown
-- Model-level usage tracking
-- Automatic low-quota alerts
-- Configurable notification thresholds
-- Historical usage statistics
+智能通知的可视化配额监控：
+- 每个账户的配额细分
+- 模型级使用跟踪
+- 自动低配额警报
+- 可配置的通知阈值
+- 历史使用统计
 
-### Agent Configuration
+### 代理配置
 
-One-click configuration for popular CLI coding tools:
-- Automatic agent detection
-- Configuration generation (JSON/TOML/Environment)
-- Shell profile integration (zsh/bash/fish)
-- Manual configuration mode with copy-to-clipboard
-- Model slot customization (Opus/Sonnet/Haiku)
+一键配置流行的 CLI 编码工具：
+- 自动代理检测
+- 配置生成 (JSON/TOML/Environment)
+- Shell 配置集成 (zsh/bash/fish)
+- 带复制到剪贴板的手动配置模式
+- 模型槽自定义 (Opus/Sonnet/Haiku)
 
-### Menu Bar Integration
+### 菜单栏集成
 
-Always-accessible status from the macOS menu bar:
-- Proxy status indicator
-- Quota percentage display per provider
-- Custom provider icons
-- Color-coded status (green/yellow/red)
-- Quick access popover
+从 macOS 菜单栏始终可访问的状态：
+- 代理状态指示器
+- 每个提供商的配额百分比显示
+- 自定义提供商图标
+- 颜色编码状态 (绿色/黄色/红色)
+- 快速访问弹出框
 
-### Notifications
+### 通知
 
-Intelligent alert system for critical events:
-- Low quota warnings (configurable threshold)
-- Account cooling period notifications
-- Proxy crash alerts
-- Sound and banner options
+关键事件的智能警报系统：
+- 低配额警告（可配置阈值）
+- 账户冷却期通知
+- 代理崩溃警报
+- 声音和横幅选项
 
-### Auto-Update
+### 自动更新
 
-Seamless update experience via Sparkle framework:
-- Background update checks
-- One-click update installation
-- Changelog display
+通过 Sparkle 框架的无缝更新体验：
+- 后台更新检查
+- 一键更新安装
+- 更新日志显示
 
-### Bilingual Support
+### 双语支持
 
-Full localization for:
-- English (en)
-- Vietnamese (vi)
+完全本地化支持：
+- 英语 (en)
+- 越南语 (vi)
 
 ---
 
-## Supported AI Providers
+## 支持的 AI 提供商
 
-| Provider | Authentication Method | Quota Tracking | Manual Auth |
+| 提供商 | 认证方法 | 配额跟踪 | 手动认证 |
 |----------|----------------------|----------------|-------------|
-| **Google Gemini** | OAuth | Yes | Yes |
-| **Anthropic Claude** | OAuth | Yes (via CLI) | Yes |
-| **OpenAI Codex** | OAuth | Yes | Yes |
-| **Qwen Code** | OAuth | No | Yes |
-| **Vertex AI** | Service Account JSON | No | Yes |
-| **iFlow** | OAuth | No | Yes |
-| **Antigravity** | OAuth | Yes | Yes |
-| **Kiro (CodeWhisperer)** | CLI Auth (Google/AWS) | No | Yes |
-| **GitHub Copilot** | Device Code Flow | Yes | Yes |
-| **Cursor** | Browser Session | Yes | No (Auto-detect) |
+| **Google Gemini** | OAuth | 是 | 是 |
+| **Anthropic Claude** | OAuth | 是（通过 CLI） | 是 |
+| **OpenAI Codex** | OAuth | 是 | 是 |
+| **Qwen Code** | OAuth | 否 | 是 |
+| **Vertex AI** | 服务账户 JSON | 否 | 是 |
+| **iFlow** | OAuth | 否 | 是 |
+| **Antigravity** | OAuth | 是 | 是 |
+| **Kiro (CodeWhisperer)** | CLI 认证 (Google/AWS) | 否 | 是 |
+| **GitHub Copilot** | 设备代码流程 | 是 | 是 |
+| **Cursor** | 浏览器会话 | 是 | 否（自动检测） |
 
-### Provider Capabilities
+### 提供商能力
 
-- **OAuth Providers**: Gemini, Claude, Codex, Qwen, iFlow, Antigravity
-- **CLI Auth**: GitHub Copilot (Device Code), Kiro (Google OAuth / AWS Builder ID)
-- **File Import**: Vertex AI (Service Account JSON)
-- **Auto-Detect Only**: Cursor (reads from local Cursor app database)
+- **OAuth 提供商**: Gemini、Claude、Codex、Qwen、iFlow、Antigravity
+- **CLI 认证**: GitHub Copilot（设备代码）、Kiro（Google OAuth / AWS Builder ID）
+- **文件导入**: Vertex AI（服务账户 JSON）
+- **仅自动检测**: Cursor（从本地 Cursor 应用数据库读取）
 
 ---
 
-## Compatible CLI Agents
+## 兼容的 CLI 代理
 
-Quotio can automatically detect and configure the following CLI coding tools:
+Quotio 可以自动检测和配置以下 CLI 编码工具：
 
-| Agent | Binary | Config Type | Config Files |
+| 代理 | 二进制文件 | 配置类型 | 配置文件 |
 |-------|--------|-------------|--------------|
 | **Claude Code** | `claude` | JSON + Environment | `~/.claude/settings.json` |
 | **Codex CLI** | `codex` | TOML + JSON | `~/.codex/config.toml`, `~/.codex/auth.json` |
-| **Gemini CLI** | `gemini` | Environment Only | - |
+| **Gemini CLI** | `gemini` | 仅 Environment | - |
 | **Amp CLI** | `amp` | JSON + Environment | `~/.config/amp/settings.json`, `~/.local/share/amp/secrets.json` |
 | **OpenCode** | `opencode`, `oc` | JSON | `~/.config/opencode/opencode.json` |
 | **Factory Droid** | `droid`, `factory-droid`, `fd` | JSON | `~/.factory/config.json` |
 
-### Configuration Modes
+### 配置模式
 
-1. **Automatic Mode**: Directly updates config files and shell profiles
-2. **Manual Mode**: Generates configuration for user to copy and apply
+1. **自动模式**: 直接更新配置文件和 shell 配置
+2. **手动模式**: 生成配置供用户复制和应用
 
-### Model Slot Configuration
+### 模型槽配置
 
-Agents can be configured with custom model routing:
-- **Opus Slot**: High intelligence tasks (e.g., `gemini-claude-opus-4-5-thinking`)
-- **Sonnet Slot**: Balanced tasks (e.g., `gemini-claude-sonnet-4-5`)
-- **Haiku Slot**: Fast/simple tasks (e.g., `gemini-3-flash-preview`)
-
----
-
-## App Modes
-
-Quotio supports two operating modes to accommodate different user needs:
-
-### Full Mode (Default)
-
-Complete functionality including proxy server management:
-
-**Features:**
-- Run local proxy server (CLIProxyAPI)
-- Manage multiple AI accounts
-- Configure CLI agents
-- Track quota in menu bar
-- API key management for clients
-- Request/response logging
-
-**Visible Pages:**
-- Dashboard
-- Quota
-- Providers
-- Agents
-- API Keys
-- Logs
-- Settings
-- About
-
-### Quota-Only Mode
-
-Lightweight mode for quota monitoring without proxy overhead:
-
-**Features:**
-- Track quota in menu bar
-- No proxy server required
-- Minimal UI and resource usage
-- Direct quota fetching via CLI commands
-- Similar to CodexBar / ccusage
-
-**Visible Pages:**
-- Dashboard
-- Quota
-- Accounts (renamed from Providers)
-- Settings
-- About
-
-### Mode Selection
-
-- Users select their preferred mode during onboarding
-- Mode can be changed anytime via Settings
-- Switching from Full to Quota-Only automatically stops the proxy
+代理可以使用自定义模型路由进行配置：
+- **Opus 槽**: 高智能任务（例如 `gemini-claude-opus-4-5-thinking`）
+- **Sonnet 槽**: 平衡任务（例如 `gemini-claude-sonnet-4-5`）
+- **Haiku 槽**: 快速/简单任务（例如 `gemini-3-flash-preview`）
 
 ---
 
-## System Requirements
+## 应用模式
 
-### Hardware Requirements
+Quotio 支持两种操作模式以满足不同的用户需求：
 
-| Component | Minimum | Recommended |
+### 完整模式（默认）
+
+包括代理服务器管理的完整功能：
+
+**功能：**
+- 运行本地代理服务器 (CLIProxyAPI)
+- 管理多个 AI 账户
+- 配置 CLI 代理
+- 在菜单栏跟踪配额
+- 客户端的 API 密钥管理
+- 请求/响应日志
+
+**可见页面：**
+- 仪表板
+- 配额
+- 提供商
+- 代理
+- API 密钥
+- 日志
+- 设置
+- 关于
+
+### 仅配额模式
+
+用于配额监控的无代理开销的轻量级模式：
+
+**功能：**
+- 在菜单栏跟踪配额
+- 不需要代理服务器
+- 最小化的 UI 和资源使用
+- 通过 CLI 命令直接配额获取
+- 类似于 CodexBar / ccusage
+
+**可见页面：**
+- 仪表板
+- 配额
+- 账户（从提供商重命名）
+- 设置
+- 关于
+
+### 模式选择
+
+- 用户在引导期间选择首选模式
+- 可以随时通过设置更改模式
+- 从完整切换到仅配额会自动停止代理
+
+---
+
+## 系统要求
+
+### 硬件要求
+
+| 组件 | 最低 | 推荐 |
 |-----------|---------|-------------|
-| **Architecture** | Apple Silicon or Intel x64 | Apple Silicon |
-| **Memory** | 4 GB RAM | 8 GB RAM |
-| **Storage** | 100 MB available | 200 MB available |
+| **架构** | Apple Silicon 或 Intel x64 | Apple Silicon |
+| **内存** | 4 GB RAM | 8 GB RAM |
+| **存储** | 100 MB 可用空间 | 200 MB 可用空间 |
 
-### Software Requirements
+### 软件要求
 
-| Requirement | Version |
+| 要求 | 版本 |
 |-------------|---------|
-| **macOS** | 15.0 (Sequoia) or later |
-| **Xcode** (for development) | 16.0+ |
-| **Swift** (for development) | 6.0+ |
+| **macOS** | 15.0 (Sequoia) 或更高版本 |
+| **Xcode**（用于开发） | 16.0+ |
+| **Swift**（用于开发） | 6.0+ |
 
-### Network Requirements
+### 网络要求
 
-- Internet connection for OAuth authentication
-- Localhost access for proxy server (port 8317 default)
-- Access to GitHub API for binary downloads
+- OAuth 认证的互联网连接
+- 代理服务器的本地主机访问（默认端口 8317）
+- 访问 GitHub API 以下载二进制文件
 
-### Optional Dependencies
+### 可选依赖项
 
-- **Sparkle Framework**: Auto-updates (bundled via Swift Package Manager)
-- **CLI Tools**: Required if using agent configuration features
+- **Sparkle Framework**: 自动更新（通过 Swift Package Manager 捆绑）
+- **CLI 工具**: 使用代理配置功能时必需
 
 ---
 
-## Technical Architecture Overview
+## 技术架构概述
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                      Quotio (SwiftUI)                       │
 ├─────────────────────────────────────────────────────────────┤
 │  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐  │
-│  │  Dashboard  │  │   Quota     │  │     Providers       │  │
-│  │   Screen    │  │   Screen    │  │      Screen         │  │
+│  │  仪表板  │  │   配额     │  │     提供商       │  │
+│  │   屏幕    │  │   屏幕    │  │      屏幕         │  │
 │  └─────────────┘  └─────────────┘  └─────────────────────┘  │
 │  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐  │
-│  │   Agents    │  │  API Keys   │  │      Settings       │  │
-│  │   Screen    │  │   Screen    │  │       Screen        │  │
+│  │   代理    │  │  API 密钥   │  │      设置       │  │
+│  │   屏幕    │  │   屏幕    │  │       屏幕        │  │
 │  └─────────────┘  └─────────────┘  └─────────────────────┘  │
 ├─────────────────────────────────────────────────────────────┤
 │                    QuotaViewModel                           │
@@ -277,38 +277,38 @@ Lightweight mode for quota monitoring without proxy overhead:
 │  │  Manager    │  │ APIClient   │  │     Manager         │  │
 │  └─────────────┘  └─────────────┘  └─────────────────────┘  │
 │  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐  │
-│  │   Quota     │  │   Agent     │  │   Notification      │  │
+│  │   配额     │  │   代理     │  │   Notification      │  │
 │  │  Fetchers   │  │  Services   │  │     Manager         │  │
 │  └─────────────┘  └─────────────┘  └─────────────────────┘  │
 └─────────────────────────────────────────────────────────────┘
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────┐
-│                    CLIProxyAPI Binary                        │
-│            (Local HTTP Proxy on port 8317)                   │
+│                    CLIProxyAPI 二进制文件                        │
+│            (本地 HTTP 代理，端口 8317)                   │
 └─────────────────────────────────────────────────────────────┘
                               │
                               ▼
           ┌────────────────────────────────────┐
-          │         AI Provider APIs           │
-          │  (Gemini, Claude, OpenAI, etc.)    │
+          │         AI 提供商 APIs           │
+          │  (Gemini, Claude, OpenAI, 等)    │
           └────────────────────────────────────┘
 ```
 
 ---
 
-## Roadmap (Future Considerations)
+## 路线图（未来考虑）
 
-1. **Automated Testing**: Implement unit and UI tests
-2. **Enhanced Analytics**: Usage trends and predictions
-3. **Team Features**: Shared account management
-4. **Plugin System**: Custom provider integrations
-5. **Cloud Sync**: Settings synchronization across devices
+1. **自动化测试**: 实现单元和 UI 测试
+2. **增强分析**: 使用趋势和预测
+3. **团队功能**: 共享账户管理
+4. **插件系统**: 自定义提供商集成
+5. **云同步**: 跨设备设置同步
 
 ---
 
-## References
+## 参考
 
-- [CLIProxyAPI GitHub Repository](https://github.com/router-for-me/CLIProxyAPIPlus)
-- [Sparkle Framework Documentation](https://sparkle-project.org/)
-- [SwiftUI Documentation](https://developer.apple.com/documentation/swiftui)
+- [CLIProxyAPI GitHub 仓库](https://github.com/router-for-me/CLIProxyAPIPlus)
+- [Sparkle 框架文档](https://sparkle-project.org/)
+- [SwiftUI 文档](https://developer.apple.com/documentation/swiftui)

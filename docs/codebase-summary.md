@@ -1,236 +1,236 @@
-# Quotio - Codebase Summary
+# Quotio - 代码库摘要
 
-> **Last Updated**: January 2, 2025  
-> **Swift Version**: 6.0  
-> **Minimum macOS**: 15.0 (Sequoia)
-
----
-
-## Table of Contents
-
-1. [Technology Stack](#technology-stack)
-2. [Dependencies](#dependencies)
-3. [High-Level Module Overview](#high-level-module-overview)
-4. [Key Files and Their Purposes](#key-files-and-their-purposes)
-5. [Data Flow Overview](#data-flow-overview)
-6. [Build and Configuration Files](#build-and-configuration-files)
+> **最后更新**: 2025年1月2日
+> **Swift 版本**: 6.0
+> **最低 macOS**: 15.0 (Sequoia)
 
 ---
 
-## Technology Stack
+## 目录
 
-| Category | Technology |
+1. [技术栈](#technology-stack)
+2. [依赖项](#dependencies)
+3. [高级模块概述](#high-level-module-overview)
+4. [关键文件及其用途](#key-files-and-their-purposes)
+5. [数据流概述](#data-flow-overview)
+6. [构建和配置文件](#build-and-configuration-files)
+
+---
+
+## 技术栈
+
+| 类别 | 技术 |
 |----------|------------|
-| **Platform** | macOS 15.0+ (Sequoia) |
-| **Language** | Swift 6 with strict concurrency |
-| **UI Framework** | SwiftUI |
-| **App Framework** | AppKit (for NSStatusBar, NSPasteboard) |
-| **Concurrency** | Swift Concurrency (async/await, actors) |
-| **State Management** | Observable macro pattern |
-| **Package Manager** | Swift Package Manager |
-| **Auto-Update** | Sparkle Framework |
+| **平台** | macOS 15.0+ (Sequoia) |
+| **语言** | Swift 6 带严格并发 |
+| **UI 框架** | SwiftUI |
+| **应用框架** | AppKit (用于 NSStatusBar, NSPasteboard) |
+| **并发** | Swift Concurrency (async/await, actors) |
+| **状态管理** | Observable 宏模式 |
+| **包管理器** | Swift Package Manager |
+| **自动更新** | Sparkle Framework |
 
-### Key Swift 6 Features Used
+### 使用的关键 Swift 6 特性
 
-- **`@Observable`** macro for reactive state
-- **`@MainActor`** for UI-bound classes
-- **`actor`** for thread-safe services
-- **`Sendable`** conformance for cross-actor data
-- **`async/await`** for all asynchronous operations
+- **`@Observable`** 宏用于响应式状态
+- **`@MainActor`** 用于 UI 绑定类
+- **`actor`** 用于线程安全服务
+- **`Sendable`** 一致性用于跨 actor 数据
+- **`async/await`** 用于所有异步操作
 
 ---
 
-## Dependencies
+## 依赖项
 
-### Third-Party Dependencies
+### 第三方依赖项
 
-| Dependency | Purpose | Integration |
+| 依赖 | 用途 | 集成方式 |
 |------------|---------|-------------|
-| **Sparkle** | Auto-update framework | Swift Package Manager |
+| **Sparkle** | 自动更新框架 | Swift Package Manager |
 
-### System Frameworks
+### 系统框架
 
-| Framework | Purpose |
+| 框架 | 用途 |
 |-----------|---------|
-| **SwiftUI** | User interface |
-| **AppKit** | Menu bar, pasteboard, workspace |
-| **Foundation** | Core utilities, networking |
-| **ServiceManagement** | Launch services |
+| **SwiftUI** | 用户界面 |
+| **AppKit** | 菜单栏、剪贴板、工作区 |
+| **Foundation** | 核心工具、网络 |
+| **ServiceManagement** | 启动服务 |
 
-### External Binaries
+### 外部二进制文件
 
-| Binary | Source | Purpose |
+| 二进制文件 | 来源 | 用途 |
 |--------|--------|---------|
-| **CLIProxyAPI** | GitHub (auto-downloaded) | Local proxy server |
+| **CLIProxyAPI** | GitHub (自动下载) | 本地代理服务器 |
 
 ---
 
-## High-Level Module Overview
+## 高级模块概述
 
-### Application Layer
+### 应用层
 
 ```
 Quotio/
-├── QuotioApp.swift          # App entry point, lifecycle management
-└── Info.plist               # App metadata and permissions
+├── QuotioApp.swift          # 应用入口、生命周期管理
+└── Info.plist               # 应用元数据和权限
 ```
 
-### Models Layer
+### 模型层
 
 ```
 Quotio/Models/
-├── Models.swift             # Core data types (AIProvider, AuthFile, etc.)
-├── AgentModels.swift        # CLI agent configuration types
-├── AntigravityActiveAccount.swift # Antigravity account model and switch state
-├── AppMode.swift            # App mode management (Full/Quota-Only)
-└── MenuBarSettings.swift    # Menu bar configuration and persistence
+├── Models.swift             # 核心数据类型 (AIProvider, AuthFile 等)
+├── AgentModels.swift        # CLI 代理配置类型
+├── AntigravityActiveAccount.swift # Antigravity 账户模型和切换状态
+├── AppMode.swift            # 应用模式管理 (Full/Quota-Only)
+└── MenuBarSettings.swift    # 菜单栏配置和持久化
 ```
 
-### Services Layer
+### 服务层
 
 ```
 Quotio/Services/
-├── CLIProxyManager.swift        # Proxy process lifecycle
-├── ManagementAPIClient.swift    # HTTP client for proxy API
-├── StatusBarManager.swift       # NSStatusBar management
-├── StatusBarMenuBuilder.swift   # Native NSMenu builder (menu bar content)
-├── NotificationManager.swift    # User notification handling
-├── UpdaterService.swift         # Sparkle integration
-├── AgentDetectionService.swift  # CLI agent detection
-├── AgentConfigurationService.swift # Agent config generation
-├── ShellProfileManager.swift    # Shell profile updates
-├── DirectAuthFileService.swift  # Direct auth file scanning
-├── CLIExecutor.swift            # CLI command execution
-├── LanguageManager.swift        # Localization management
-├── AntigravityAccountSwitcher.swift  # Account switching orchestrator
-├── AntigravityDatabaseService.swift  # SQLite database operations
-├── AntigravityProcessManager.swift   # IDE process lifecycle management
-├── AntigravityProtobufHandler.swift  # Protobuf encoding/decoding
-└── *QuotaFetcher.swift          # Provider-specific quota fetchers (7 files)
+├── CLIProxyManager.swift        # 代理进程生命周期
+├── ManagementAPIClient.swift    # 代理 API 的 HTTP 客户端
+├── StatusBarManager.swift       # NSStatusBar 管理
+├── StatusBarMenuBuilder.swift   # 原生 NSMenu 构建器 (菜单栏内容)
+├── NotificationManager.swift    # 用户通知处理
+├── UpdaterService.swift         # Sparkle 集成
+├── AgentDetectionService.swift  # CLI 代理检测
+├── AgentConfigurationService.swift # 代理配置生成
+├── ShellProfileManager.swift    # Shell 配置更新
+├── DirectAuthFileService.swift  # 直接认证文件扫描
+├── CLIExecutor.swift            # CLI 命令执行
+├── LanguageManager.swift        # 本地化管理
+├── AntigravityAccountSwitcher.swift  # 账户切换协调器
+├── AntigravityDatabaseService.swift  # SQLite 数据库操作
+├── AntigravityProcessManager.swift   # IDE 进程生命周期管理
+├── AntigravityProtobufHandler.swift  # Protobuf 编码/解码
+└── *QuotaFetcher.swift          # 提供商特定的配额获取器 (7 个文件)
 ```
 
-### ViewModels Layer
+### ViewModels 层
 
 ```
 Quotio/ViewModels/
-├── QuotaViewModel.swift         # Main app state container
-└── AgentSetupViewModel.swift    # Agent configuration state
+├── QuotaViewModel.swift         # 主应用状态容器
+└── AgentSetupViewModel.swift    # 代理配置状态
 ```
 
-### Views Layer
+### 视图层
 
 ```
 Quotio/Views/
 ├── Components/
-│   ├── AccountRow.swift         # Account row with switch button
-│   ├── AgentCard.swift          # Agent display card
-│   ├── AgentConfigSheet.swift   # Agent configuration sheet
-│   ├── ProviderIcon.swift       # Provider icon component
-│   ├── QuotaCard.swift          # Quota display card
-│   ├── QuotaProgressBar.swift   # Progress bar component
-│   ├── SidebarView.swift        # Navigation sidebar
-│   └── SwitchAccountSheet.swift # Account switch confirmation dialog
+│   ├── AccountRow.swift         # 带切换按钮的账户行
+│   ├── AgentCard.swift          # 代理显示卡片
+│   ├── AgentConfigSheet.swift   # 代理配置表单
+│   ├── ProviderIcon.swift       # 提供商标题组件
+│   ├── QuotaCard.swift          # 配额显示卡片
+│   ├── QuotaProgressBar.swift   # 进度条组件
+│   ├── SidebarView.swift        # 导航侧边栏
+│   └── SwitchAccountSheet.swift # 账户切换确认对话框
 └── Screens/
-    ├── DashboardScreen.swift    # Main dashboard
-    ├── QuotaScreen.swift        # Quota monitoring
-    ├── ProvidersScreen.swift    # Provider management
-    ├── AgentSetupScreen.swift   # Agent configuration
-    ├── APIKeysScreen.swift      # API key management
-    ├── LogsScreen.swift         # Log viewer
-    └── SettingsScreen.swift     # App settings
+    ├── DashboardScreen.swift    # 主仪表板
+    ├── QuotaScreen.swift        # 配额监控
+    ├── ProvidersScreen.swift    # 提供商管理
+    ├── AgentSetupScreen.swift   # 代理配置
+    ├── APIKeysScreen.swift      # API 密钥管理
+    ├── LogsScreen.swift         # 日志查看器
+    └── SettingsScreen.swift     # 应用设置
 ```
 
-### Assets
+### 资源
 
 ```
 Quotio/Assets.xcassets/
-├── AppIcon.appiconset/          # App icons (production)
-├── AppIconDev.appiconset/       # App icons (development)
-├── MenuBarIcons/                # Provider icons for menu bar
-├── ProviderIcons/               # Provider logos
-└── AccentColor.colorset/        # Accent color definition
+├── AppIcon.appiconset/          # 应用图标 (生产环境)
+├── AppIconDev.appiconset/       # 应用图标 (开发环境)
+├── MenuBarIcons/                # 菜单栏提供商图标
+├── ProviderIcons/               # 提供商标志
+└── AccentColor.colorset/        # 强调色定义
 ```
 
 ---
 
-## Key Files and Their Purposes
+## 关键文件及其用途
 
-### Entry Point
+### 入口点
 
-| File | Purpose |
+| 文件 | 用途 |
 |------|---------|
-| **QuotioApp.swift** | App entry, scene definition, AppDelegate, ContentView, menu bar orchestration |
+| **QuotioApp.swift** | 应用入口、场景定义、AppDelegate、ContentView、菜单栏协调 |
 
-### Core Data Types
+### 核心数据类型
 
-| File | Key Types | Purpose |
+| 文件 | 关键类型 | 用途 |
 |------|-----------|---------|
-| **Models.swift** | `AIProvider`, `ProxyStatus`, `AuthFile`, `UsageStats`, `AppConfig`, `NavigationPage` | Core domain models |
-| **AgentModels.swift** | `CLIAgent`, `AgentConfigType`, `ModelSlot`, `AgentStatus`, `AgentConfiguration` | CLI agent types |
-| **AppMode.swift** | `AppMode`, `AppModeManager` | Full/Quota-Only mode management |
-| **MenuBarSettings.swift** | `MenuBarQuotaItem`, `MenuBarColorMode`, `QuotaDisplayMode`, `MenuBarSettingsManager`, `AppearanceManager` | Menu bar configuration |
+| **Models.swift** | `AIProvider`, `ProxyStatus`, `AuthFile`, `UsageStats`, `AppConfig`, `NavigationPage` | 核心域模型 |
+| **AgentModels.swift** | `CLIAgent`, `AgentConfigType`, `ModelSlot`, `AgentStatus`, `AgentConfiguration` | CLI 代理类型 |
+| **AppMode.swift** | `AppMode`, `AppModeManager` | Full/Quota-Only 模式管理 |
+| **MenuBarSettings.swift** | `MenuBarQuotaItem`, `MenuBarColorMode`, `QuotaDisplayMode`, `MenuBarSettingsManager`, `AppearanceManager` | 菜单栏配置 |
 
-### Services
+### 服务
 
-| File | Key Class/Actor | Purpose |
+| 文件 | 关键类/Actor | 用途 |
 |------|-----------------|---------|
-| **CLIProxyManager.swift** | `CLIProxyManager`, `ProxyError`, `AuthCommand` | Proxy binary lifecycle, download, CLI auth commands |
-| **ManagementAPIClient.swift** | `ManagementAPIClient`, `APIError` | HTTP requests to proxy management API |
-| **StatusBarManager.swift** | `StatusBarManager` | NSStatusItem management, popover handling |
-| **NotificationManager.swift** | `NotificationManager` | User notification delivery and management |
-| **AgentDetectionService.swift** | `AgentDetectionService` | Find installed CLI agents |
-| **AgentConfigurationService.swift** | `AgentConfigurationService` | Generate agent configurations |
-| **ShellProfileManager.swift** | `ShellProfileManager` | Update shell profiles (zsh/bash/fish) |
+| **CLIProxyManager.swift** | `CLIProxyManager`, `ProxyError`, `AuthCommand` | 代理二进制生命周期、下载、CLI 认证命令 |
+| **ManagementAPIClient.swift** | `ManagementAPIClient`, `APIError` | 向代理管理 API 发起 HTTP 请求 |
+| **StatusBarManager.swift** | `StatusBarManager` | NSStatusItem 管理、弹出框处理 |
+| **NotificationManager.swift** | `NotificationManager` | 用户通知交付和管理 |
+| **AgentDetectionService.swift** | `AgentDetectionService` | 查找已安装的 CLI 代理 |
+| **AgentConfigurationService.swift** | `AgentConfigurationService` | 生成代理配置 |
+| **ShellProfileManager.swift** | `ShellProfileManager` | 更新 shell 配置 (zsh/bash/fish) |
 
-### Quota Fetchers
+### 配额获取器
 
-| File | Provider(s) | Method |
+| 文件 | 提供商 | 方法 |
 |------|-------------|--------|
-| **AntigravityQuotaFetcher.swift** | Antigravity | API calls using auth files |
-| **OpenAIQuotaFetcher.swift** | Codex (OpenAI) | API calls using auth files |
-| **CopilotQuotaFetcher.swift** | GitHub Copilot | API calls using auth files |
-| **ClaudeCodeQuotaFetcher.swift** | Claude | CLI command (`claude usage`) |
-| **CursorQuotaFetcher.swift** | Cursor | Browser session/database |
-| **CodexCLIQuotaFetcher.swift** | Codex | CLI auth file (`~/.codex/auth.json`) |
-| **GeminiCLIQuotaFetcher.swift** | Gemini | CLI auth file (`~/.gemini/oauth_creds.json`) |
+| **AntigravityQuotaFetcher.swift** | Antigravity | 使用认证文件的 API 调用 |
+| **OpenAIQuotaFetcher.swift** | Codex (OpenAI) | 使用认证文件的 API 调用 |
+| **CopilotQuotaFetcher.swift** | GitHub Copilot | 使用认证文件的 API 调用 |
+| **ClaudeCodeQuotaFetcher.swift** | Claude | CLI 命令 (`claude usage`) |
+| **CursorQuotaFetcher.swift** | Cursor | 浏览器会话/数据库 |
+| **CodexCLIQuotaFetcher.swift** | Codex | CLI 认证文件 (`~/.codex/auth.json`) |
+| **GeminiCLIQuotaFetcher.swift** | Gemini | CLI 认证文件 (`~/.gemini/oauth_creds.json`) |
 
 ### ViewModels
 
-| File | Key Class | Responsibilities |
+| 文件 | 关键类 | 职责 |
 |------|-----------|------------------|
-| **QuotaViewModel.swift** | `QuotaViewModel`, `OAuthState` | Central app state, proxy control, OAuth flow, quota management, menu bar items |
-| **AgentSetupViewModel.swift** | `AgentSetupViewModel` | Agent detection, configuration, testing |
+| **QuotaViewModel.swift** | `QuotaViewModel`, `OAuthState` | 中央应用状态、代理控制、OAuth 流程、配额管理、菜单栏项 |
+| **AgentSetupViewModel.swift** | `AgentSetupViewModel` | 代理检测、配置、测试 |
 
 ---
 
-## Data Flow Overview
+## 数据流概述
 
-### Application Startup Flow
+### 应用启动流程
 
 ```
 1. QuotioApp.init()
    │
    ├─▶ @State viewModel = QuotaViewModel()
-   │   └─▶ CLIProxyManager.shared initialized
+   │   └─▶ CLIProxyManager.shared 初始化
    │
-   ├─▶ Check onboarding status
-   │   └─▶ Show ModePickerView if not completed
+   ├─▶ 检查引导状态
+   │   └─▶ 如果未完成则显示 ModePickerView
    │
    └─▶ initializeApp()
-       ├─▶ Apply appearance settings
-       ├─▶ Mode-based initialization
-       │   ├─▶ Full Mode: Start proxy if autoStart enabled
-       │   └─▶ Quota-Only: Load direct auth files, fetch quotas
+       ├─▶ 应用外观设置
+       ├─▶ 基于模式的初始化
+       │   ├─▶ 完整模式：如果启用了 autoStart 则启动代理
+       │   └─▶ 仅配额：加载直接认证文件、获取配额
        │
-       └─▶ Update status bar
+       └─▶ 更新状态栏
 ```
 
-### Full Mode Data Flow
+### 完整模式数据流
 
 ```
 ┌──────────────────┐
-│   User Action    │
-│ (Start Proxy)    │
+│   用户操作    │
+│ (启动代理)    │
 └────────┬─────────┘
          │
          ▼
@@ -242,29 +242,29 @@ Quotio/Assets.xcassets/
          ▼
 ┌──────────────────┐       ┌────────────────────┐
 │ CLIProxyManager  │──────▶│   CLIProxyAPI      │
-│    .start()      │       │   (Binary)         │
+│    .start()      │       │   (二进制)         │
 └────────┬─────────┘       └────────────────────┘
          │
          ▼
 ┌──────────────────┐
 │ ManagementAPI    │
-│    Client        │ ◀─── HTTP requests to localhost:8317
+│    Client        │ ◀─── HTTP 请求到 localhost:8317
 └────────┬─────────┘
          │
          ▼
 ┌──────────────────┐
-│  Auto-Refresh    │ ──── Every 15 seconds
-│    Task          │
+│  自动刷新    │ ──── 每 15 秒
+│    任务          │
 └────────┬─────────┘
          │
          ▼
 ┌──────────────────┐
-│ UI Updates via   │
+│ UI 通过   │
 │  @Observable     │
 └──────────────────┘
 ```
 
-### Quota Fetching Flow
+### 配额获取流程
 
 ```
 ┌──────────────────────────────────────────────────────┐
@@ -291,12 +291,12 @@ Quotio/Assets.xcassets/
 └─────────────────────────────────────────────────┘
 ```
 
-### OAuth Authentication Flow
+### OAuth 认证流程
 
 ```
 ┌──────────────┐     ┌───────────────┐     ┌─────────────────┐
-│    User      │────▶│ QuotaViewModel │────▶│ Management API  │
-│ Clicks Auth  │     │  .startOAuth() │     │ Client          │
+│    用户      │────▶│ QuotaViewModel │────▶│ Management API  │
+│ 点击认证  │     │  .startOAuth() │     │ Client          │
 └──────────────┘     └───────┬───────┘     └────────┬────────┘
                              │                      │
                              │     GET /xxx-auth-url
@@ -304,25 +304,25 @@ Quotio/Assets.xcassets/
                              │
                              ▼
                     ┌─────────────────┐
-                    │  Open Browser   │
+                    │  打开浏览器   │
                     │   (OAuth URL)   │
                     └────────┬────────┘
                              │
                              ▼
                     ┌─────────────────┐
-                    │  Poll Status    │
-                    │  (every 2s)     │
+                    │  轮询状态    │
+                    │  (每 2 秒)     │
                     └────────┬────────┘
                              │
-                    Success? ─┴─ Continue polling
+                    成功? ─┴─ 继续轮询
                              │
                              ▼
                     ┌─────────────────┐
-                    │  Refresh Data   │
+                    │  刷新数据     │
                     └─────────────────┘
 ```
 
-### Agent Configuration Flow
+### 代理配置流程
 
 ```
 ┌─────────────────┐     ┌──────────────────────┐
@@ -340,96 +340,96 @@ Quotio/Assets.xcassets/
          │                        │                        │
          ▼                        ▼                        ▼
 ┌─────────────────┐    ┌─────────────────┐     ┌─────────────────┐
-│  Write Config   │    │  Update Shell   │     │   Copy to       │
-│   JSON/TOML     │    │    Profile      │     │   Clipboard     │
+│  写入配置   │    │  更新 Shell  │     │   复制到       │
+│   JSON/TOML     │    │    配置      │     │   剪贴板     │
 └─────────────────┘    └─────────────────┘     └─────────────────┘
 ```
 
 ---
 
-## Build and Configuration Files
+## 构建和配置文件
 
-### Xcode Project
+### Xcode 项目
 
-| File/Directory | Purpose |
+| 文件/目录 | 用途 |
 |----------------|---------|
-| **Quotio.xcodeproj/** | Xcode project container |
-| **project.pbxproj** | Project settings, targets, build phases |
-| **xcschemes/Quotio.xcscheme** | Build scheme configuration |
-| **Package.resolved** | Swift Package Manager dependency lock |
+| **Quotio.xcodeproj/** | Xcode 项目容器 |
+| **project.pbxproj** | 项目设置、目标、构建阶段 |
+| **xcschemes/Quotio.xcscheme** | 构建方案配置 |
+| **Package.resolved** | Swift Package Manager 依赖锁定 |
 
-### Build Configurations
+### 构建配置
 
-| File | Purpose |
+| 文件 | 用途 |
 |------|---------|
-| **Config/Debug.xcconfig** | Debug build settings |
-| **Config/Release.xcconfig** | Release build settings |
-| **Config/Local.xcconfig.example** | Template for local overrides |
+| **Config/Debug.xcconfig** | Debug 构建设置 |
+| **Config/Release.xcconfig** | Release 构建设置 |
+| **Config/Local.xcconfig.example** | 本地覆盖模板 |
 
-### Build Scripts
+### 构建脚本
 
-| Script | Purpose |
+| 脚本 | 用途 |
 |--------|---------|
-| **scripts/build.sh** | Build release archive |
-| **scripts/release.sh** | Full release workflow |
-| **scripts/bump-version.sh** | Version management |
-| **scripts/notarize.sh** | Apple notarization |
-| **scripts/package.sh** | DMG packaging |
-| **scripts/generate-appcast.sh** | Sparkle appcast generation |
-| **scripts/config.sh** | Shared configuration |
-| **scripts/ExportOptions.plist** | Archive export options |
+| **scripts/build.sh** | 构建发布归档 |
+| **scripts/release.sh** | 完整发布工作流 |
+| **scripts/bump-version.sh** | 版本管理 |
+| **scripts/notarize.sh** | Apple 公证 |
+| **scripts/package.sh** | DMG 打包 |
+| **scripts/generate-appcast.sh** | Sparkle appcast 生成 |
+| **scripts/config.sh** | 共享配置 |
+| **scripts/ExportOptions.plist** | 归档导出选项 |
 
-### App Configuration
+### 应用配置
 
-| File | Purpose |
+| 文件 | 用途 |
 |------|---------|
-| **Info.plist** | App metadata, permissions, URL schemes |
-| **Quotio.entitlements** | Sandbox and capability entitlements |
+| **Info.plist** | 应用元数据、权限、URL 方案 |
+| **Quotio.entitlements** | 沙盒和功能权限 |
 
 ---
 
-## Runtime File Locations
+## 运行时文件位置
 
-### Application Support
+### 应用支持
 
 ```
 ~/Library/Application Support/Quotio/
-├── CLIProxyAPI          # Downloaded proxy binary
-└── config.yaml          # Proxy configuration
+├── CLIProxyAPI          # 下载的代理二进制文件
+└── config.yaml          # 代理配置
 ```
 
-### Auth Files Directory
+### 认证文件目录
 
 ```
 ~/.cli-proxy-api/
-├── gemini-cli-*.json    # Gemini auth files
-├── claude-*.json        # Claude auth files
-├── codex-*.json         # Codex auth files
-├── github-copilot-*.json # Copilot auth files
-└── ...                  # Other provider auth files
+├── gemini-cli-*.json    # Gemini 认证文件
+├── claude-*.json        # Claude 认证文件
+├── codex-*.json         # Codex 认证文件
+├── github-copilot-*.json # Copilot 认证文件
+└── ...                  # 其他提供商认证文件
 ```
 
-### User Defaults Keys
+### 用户默认键
 
-| Key | Type | Purpose |
+| 键 | 类型 | 用途 |
 |-----|------|---------|
-| `proxyPort` | Int | Proxy server port |
-| `managementKey` | String | Management API secret key |
-| `autoStartProxy` | Bool | Auto-start proxy on launch |
-| `appMode` | String | Current app mode |
-| `hasCompletedOnboarding` | Bool | Onboarding completion status |
-| `menuBarSelectedQuotaItems` | Data | Selected menu bar items |
-| `menuBarColorMode` | String | Menu bar color mode |
-| `showMenuBarIcon` | Bool | Show menu bar icon |
-| `menuBarShowQuota` | Bool | Show quota in menu bar |
-| `quotaDisplayMode` | String | Quota display mode |
-| `loggingToFile` | Bool | Enable file logging |
-| `appearanceMode` | String | Light/dark/system mode |
-| `quotaAlertThreshold` | Double | Low quota notification threshold |
+| `proxyPort` | Int | 代理服务器端口 |
+| `managementKey` | String | 管理 API 密钥 |
+| `autoStartProxy` | Bool | 启动时自动启动代理 |
+| `appMode` | String | 当前应用模式 |
+| `hasCompletedOnboarding` | Bool | 引导完成状态 |
+| `menuBarSelectedQuotaItems` | Data | 选定的菜单栏项 |
+| `menuBarColorMode` | String | 菜单栏颜色模式 |
+| `showMenuBarIcon` | Bool | 显示菜单栏图标 |
+| `menuBarShowQuota` | Bool | 在菜单栏显示配额 |
+| `quotaDisplayMode` | String | 配额显示模式 |
+| `loggingToFile` | Bool | 启用文件日志 |
+| `appearanceMode` | String | 浅色/深色/系统模式 |
+| `quotaAlertThreshold` | Double | 低配额通知阈值 |
 
 ---
 
-## Localization Structure
+## 本地化结构
 
 ```
 Quotio/
@@ -440,12 +440,12 @@ Quotio/
         └── Localizable.strings
 ```
 
-### Localization Key Patterns
+### 本地化键模式
 
-| Pattern | Example | Usage |
+| 模式 | 示例 | 用途 |
 |---------|---------|-------|
-| `nav.*` | `nav.dashboard` | Navigation labels |
-| `action.*` | `action.startProxy` | Button actions |
-| `status.*` | `status.running` | Status indicators |
-| `settings.*` | `settings.port` | Settings labels |
-| `error.*` | `error.invalidURL` | Error messages |
+| `nav.*` | `nav.dashboard` | 导航标签 |
+| `action.*` | `action.startProxy` | 按钮操作 |
+| `status.*` | `status.running` | 状态指示器 |
+| `settings.*` | `settings.port` | 设置标签 |
+| `error.*` | `error.invalidURL` | 错误消息 |
