@@ -1,67 +1,67 @@
-# Quotio - 代码库结构、架构和代码标准
+# Quotio - Codebase Structure, Architecture, and Code Standards
 
-> **最后更新**: 2025年1月2日
-> **Swift 版本**: 6.0
-> **最低 macOS**: 15.0 (Sequoia)
-
----
-
-## 目录
-
-1. [目录结构](#directory-structure)
-2. [架构模式](#architecture-patterns)
-3. [代码风格指南](#code-style-guidelines)
-4. [关键实现模式](#key-implementation-patterns)
+> **Last Updated**: January 2, 2025  
+> **Swift Version**: 6.0  
+> **Minimum macOS**: 15.0 (Sequoia)
 
 ---
 
-## 目录结构
+## Table of Contents
+
+1. [Directory Structure](#directory-structure)
+2. [Architecture Patterns](#architecture-patterns)
+3. [Code Style Guidelines](#code-style-guidelines)
+4. [Key Implementation Patterns](#key-implementation-patterns)
+
+---
+
+## Directory Structure
 
 ```
 Quotio/
 ├── Config/
-│   ├── Debug.xcconfig           # Debug 构建配置
-│   ├── Release.xcconfig         # Release 构建配置
-│   └── Local.xcconfig.example   # 本地覆盖模板
+│   ├── Debug.xcconfig           # Debug build configuration
+│   ├── Release.xcconfig         # Release build configuration
+│   └── Local.xcconfig.example   # Template for local overrides
 │
 ├── Quotio/
 │   ├── Assets.xcassets/
-│   │   ├── AccentColor.colorset/    # 强调色定义
-│   │   ├── AppIcon.appiconset/      # 生产环境应用图标
-│   │   ├── AppIconDev.appiconset/   # 开发环境应用图标
-│   │   ├── MenuBarIcons/            # 菜单栏提供商图标
+│   │   ├── AccentColor.colorset/    # Accent color definition
+│   │   ├── AppIcon.appiconset/      # Production app icons
+│   │   ├── AppIconDev.appiconset/   # Development app icons
+│   │   ├── MenuBarIcons/            # Provider icons for menu bar
 │   │   │   ├── claude-menubar.imageset/
 │   │   │   ├── gemini-menubar.imageset/
-│   │   │   └── ... (其他提供商)
-│   │   └── ProviderIcons/           # UI 提供商标志
+│   │   │   └── ... (other providers)
+│   │   └── ProviderIcons/           # Provider logos for UI
 │   │       ├── claude.imageset/
 │   │       ├── gemini.imageset/
-│   │       └── ... (其他提供商)
+│   │       └── ... (other providers)
 │   │
 │   ├── Models/
-│   │   ├── Models.swift             # 核心数据类型
-│   │   ├── AgentModels.swift        # CLI 代理类型
-│   │   ├── AntigravityActiveAccount.swift # Antigravity 账户模型
-│   │   ├── AppMode.swift            # 应用模式管理
-│   │   └── MenuBarSettings.swift    # 菜单栏设置
+│   │   ├── Models.swift             # Core data types
+│   │   ├── AgentModels.swift        # CLI agent types
+│   │   ├── AntigravityActiveAccount.swift # Antigravity account model
+│   │   ├── AppMode.swift            # App mode management
+│   │   └── MenuBarSettings.swift    # Menu bar settings
 │   │
 │   ├── Services/
-│   │   ├── CLIProxyManager.swift        # 代理生命周期管理
-│   │   ├── ManagementAPIClient.swift    # HTTP 客户端 (actor)
-│   │   ├── StatusBarManager.swift       # 菜单栏管理
-│   │   ├── StatusBarMenuBuilder.swift   # 原生 NSMenu 构建器
-│   │   ├── NotificationManager.swift    # 用户通知
-│   │   ├── UpdaterService.swift         # Sparkle 集成
-│   │   ├── AgentDetectionService.swift  # 代理检测
-│   │   ├── AgentConfigurationService.swift # 配置生成
-│   │   ├── ShellProfileManager.swift    # Shell 配置更新
-│   │   ├── DirectAuthFileService.swift  # 直接文件扫描
-│   │   ├── CLIExecutor.swift            # CLI 执行
-│   │   ├── LanguageManager.swift        # 本地化
-│   │   ├── AntigravityAccountSwitcher.swift # 账户切换协调器
-│   │   ├── AntigravityDatabaseService.swift # SQLite 数据库操作
-│   │   ├── AntigravityProcessManager.swift  # IDE 进程生命周期
-│   │   ├── AntigravityProtobufHandler.swift # Protobuf 编码/解码
+│   │   ├── CLIProxyManager.swift        # Proxy lifecycle management
+│   │   ├── ManagementAPIClient.swift    # HTTP client (actor)
+│   │   ├── StatusBarManager.swift       # Menu bar management
+│   │   ├── StatusBarMenuBuilder.swift   # Native NSMenu builder
+│   │   ├── NotificationManager.swift    # User notifications
+│   │   ├── UpdaterService.swift         # Sparkle integration
+│   │   ├── AgentDetectionService.swift  # Agent detection
+│   │   ├── AgentConfigurationService.swift # Config generation
+│   │   ├── ShellProfileManager.swift    # Shell profile updates
+│   │   ├── DirectAuthFileService.swift  # Direct file scanning
+│   │   ├── CLIExecutor.swift            # CLI execution
+│   │   ├── LanguageManager.swift        # Localization
+│   │   ├── AntigravityAccountSwitcher.swift # Account switching orchestrator
+│   │   ├── AntigravityDatabaseService.swift # SQLite database operations
+│   │   ├── AntigravityProcessManager.swift  # IDE process lifecycle
+│   │   ├── AntigravityProtobufHandler.swift # Protobuf encoding/decoding
 │   │   ├── AntigravityQuotaFetcher.swift
 │   │   ├── OpenAIQuotaFetcher.swift
 │   │   ├── CopilotQuotaFetcher.swift
@@ -71,21 +71,21 @@ Quotio/
 │   │   └── GeminiCLIQuotaFetcher.swift
 │   │
 │   ├── ViewModels/
-│   │   ├── QuotaViewModel.swift         # 主应用状态
-│   │   └── AgentSetupViewModel.swift    # 代理设置状态
+│   │   ├── QuotaViewModel.swift         # Main app state
+│   │   └── AgentSetupViewModel.swift    # Agent setup state
 │   │
 │   ├── Views/
 │   │   ├── Components/
-│   │   │   ├── AccountRow.swift         # 带切换按钮的账户行
-│   │   │   ├── AgentCard.swift          # 代理显示卡片
-│   │   │   ├── AgentConfigSheet.swift   # 配置表单
-│   │   │   ├── ProviderIcon.swift       # 提供商标题组件
-│   │   │   ├── QuotaCard.swift          # 配额显示卡片
-│   │   │   ├── QuotaProgressBar.swift   # 进度条组件
-│   │   │   ├── SidebarView.swift        # 导航侧边栏
-│   │   │   └── SwitchAccountSheet.swift # 账户切换确认
+│   │   │   ├── AccountRow.swift         # Account row with switch button
+│   │   │   ├── AgentCard.swift          # Agent display card
+│   │   │   ├── AgentConfigSheet.swift   # Configuration sheet
+│   │   │   ├── ProviderIcon.swift       # Provider icon component
+│   │   │   ├── QuotaCard.swift          # Quota display card
+│   │   │   ├── QuotaProgressBar.swift   # Progress bar component
+│   │   │   ├── SidebarView.swift        # Navigation sidebar
+│   │   │   └── SwitchAccountSheet.swift # Account switch confirmation
 │   │   ├── Onboarding/
-│   │   │   └── ModePickerView.swift     # 模式选择
+│   │   │   └── ModePickerView.swift     # Mode selection
 │   │   └── Screens/
 │   │       ├── DashboardScreen.swift
 │   │       ├── QuotaScreen.swift
@@ -95,96 +95,96 @@ Quotio/
 │   │       ├── LogsScreen.swift
 │   │       └── SettingsScreen.swift
 │   │
-│   ├── Info.plist                   # 应用元数据
-│   ├── Quotio.entitlements          # 应用权限
-│   └── QuotioApp.swift              # 应用入口
+│   ├── Info.plist                   # App metadata
+│   ├── Quotio.entitlements          # App entitlements
+│   └── QuotioApp.swift              # App entry point
 │
 ├── Quotio.xcodeproj/
-│   ├── project.pbxproj              # 项目配置
+│   ├── project.pbxproj              # Project configuration
 │   └── xcshareddata/
 │       └── xcschemes/
-│           └── Quotio.xcscheme      # 构建方案
+│           └── Quotio.xcscheme      # Build scheme
 │
 ├── scripts/
-│   ├── build.sh                     # 构建脚本
-│   ├── release.sh                   # 发布工作流
-│   ├── bump-version.sh              # 版本管理
-│   ├── notarize.sh                  # Apple 公证
-│   ├── package.sh                   # DMG 打包
-│   ├── generate-appcast.sh          # Sparkle appcast 生成
-│   ├── config.sh                    # 共享配置
-│   └── ExportOptions.plist          # 归档导出选项
+│   ├── build.sh                     # Build script
+│   ├── release.sh                   # Release workflow
+│   ├── bump-version.sh              # Version management
+│   ├── notarize.sh                  # Apple notarization
+│   ├── package.sh                   # DMG packaging
+│   ├── generate-appcast.sh          # Sparkle appcast
+│   ├── config.sh                    # Shared configuration
+│   └── ExportOptions.plist          # Archive export options
 │
-├── screenshots/                     # 文档截图
+├── screenshots/                     # Documentation screenshots
 │
-├── AGENTS.md                        # 开发指南
-├── CHANGELOG.md                     # 版本历史
-├── README.md                        # 项目说明 (英文)
-├── README.vi.md                     # 项目说明 (越南语)
-└── RELEASE.md                       # 发布文档
+├── AGENTS.md                        # Development guidelines
+├── CHANGELOG.md                     # Version history
+├── README.md                        # Project readme (English)
+├── README.vi.md                     # Project readme (Vietnamese)
+└── RELEASE.md                       # Release documentation
 ```
 
 ---
 
-## 架构模式
+## Architecture Patterns
 
 ### MVVM (Model-View-ViewModel)
 
-Quotio 使用 SwiftUI 遵循 MVVM 架构模式：
+Quotio follows the MVVM architectural pattern with SwiftUI:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                          视图层                          │
-│  (Views/Screens/ 和 Views/Components/ 中的 SwiftUI 视图)    │
+│                          View Layer                          │
+│  (SwiftUI Views in Views/Screens/ and Views/Components/)    │
 └─────────────────────────────┬───────────────────────────────┘
                               │ @Environment(ViewModel.self)
                               │ @Bindable var vm = viewModel
                               ▼
 ┌─────────────────────────────────────────────────────────────┐
-│                       ViewModel 层                        │
-│  (ViewModels/ 中的 QuotaViewModel, AgentSetupViewModel)       │
-│  - @Observable 宏                                         │
-│  - @MainActor 用于 UI 线程安全                          │
+│                       ViewModel Layer                        │
+│  (QuotaViewModel, AgentSetupViewModel in ViewModels/)       │
+│  - @Observable macro                                         │
+│  - @MainActor for UI thread safety                          │
 └─────────────────────────────┬───────────────────────────────┘
-                              │ async/await 调用
+                              │ async/await calls
                               ▼
 ┌─────────────────────────────────────────────────────────────┐
-│                       服务层                          │
-│  (Services/ 中的 CLIProxyManager, ManagementAPIClient, *Fetcher)│
-│  - 管理器使用单例模式                            │
-│  - API 客户端使用 Actor 隔离                           │
+│                       Service Layer                          │
+│  (CLIProxyManager, ManagementAPIClient, *Fetcher in Services/)│
+│  - Singleton pattern for managers                            │
+│  - Actor isolation for API clients                           │
 └─────────────────────────────┬───────────────────────────────┘
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────┐
-│                        模型层                           │
-│  (Models/ 中的数据类型)                                     │
-│  - Codable 用于 JSON 序列化                            │
-│  - Sendable 用于跨 actor 传输                         │
+│                        Model Layer                           │
+│  (Data types in Models/)                                     │
+│  - Codable for JSON serialization                            │
+│  - Sendable for cross-actor transfer                         │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### 可观察模式 (Swift 6)
+### Observable Pattern (Swift 6)
 
-应用使用新的 `@Observable` 宏而不是 `ObservableObject`:
+The app uses the new `@Observable` macro instead of `ObservableObject`:
 
 ```swift
-// ViewModel 声明
+// ViewModel Declaration
 @MainActor
 @Observable
 final class QuotaViewModel {
     var isLoading = false
     var authFiles: [AuthFile] = []
-    // 属性自动被观察
+    // Properties are automatically observed
 }
 
-// 视图使用
+// View Usage
 struct DashboardScreen: View {
     @Environment(QuotaViewModel.self) private var viewModel
-
+    
     var body: some View {
-        @Bindable var vm = viewModel  // 用于双向绑定
-
+        @Bindable var vm = viewModel  // For two-way bindings
+        
         List(selection: $vm.currentPage) {
             // ...
         }
@@ -192,38 +192,38 @@ struct DashboardScreen: View {
 }
 ```
 
-### 基于 Actor 的并发
+### Actor-Based Concurrency
 
-线程安全的服务使用 `actor` 关键字：
+Thread-safe services use the `actor` keyword:
 
 ```swift
 actor ManagementAPIClient {
     private let baseURL: String
     private let authKey: String
     private let session: URLSession
-
+    
     func fetchAuthFiles() async throws -> [AuthFile] {
-        // Actor 隔离确保线程安全
+        // Actor isolation ensures thread safety
         let data = try await makeRequest("/auth-files")
         return try JSONDecoder().decode(AuthFilesResponse.self, from: data).files
     }
 }
 ```
 
-### 管理器的单例模式
+### Singleton Pattern for Managers
 
-长期运行的服务使用单例模式：
+Long-lived services use the singleton pattern:
 
 ```swift
 @MainActor
 @Observable
 final class StatusBarManager {
     static let shared = StatusBarManager()
-
+    
     private var statusItem: NSStatusItem?
-
-    private init() {}  // 私有初始化器
-
+    
+    private init() {}  // Private initializer
+    
     func updateStatusBar(...) {
         // ...
     }
@@ -232,44 +232,44 @@ final class StatusBarManager {
 
 ---
 
-## 代码风格指南
+## Code Style Guidelines
 
-### Swift 版本和并发
+### Swift Version and Concurrency
 
-**Swift 6** 和严格的并发检查是必需的：
+**Swift 6** with strict concurrency checking is required:
 
 ```swift
-// 所有 UI 相关的类必须是 MainActor
+// All UI-related classes must be MainActor
 @MainActor
 @Observable
 final class QuotaViewModel {
-    // UI 状态
+    // UI state
 }
 
-// 线程安全的服务使用 actor
+// Thread-safe services use actor
 actor ManagementAPIClient {
-    // 网络操作
+    // Network operations
 }
 
-// 跨越 actor 边界的数据类型必须是 Sendable
+// Data types crossing actor boundaries must be Sendable
 struct AuthFile: Codable, Identifiable, Hashable, Sendable {
     let id: String
     // ...
 }
 
-// 异步操作使用 async/await
+// Async operations use async/await
 func refreshData() async {
     let files = try await client.fetchAuthFiles()
     self.authFiles = files
 }
 ```
 
-### 可观察模式
+### Observable Pattern
 
-使用 `@Observable` 宏（不是 `ObservableObject`）：
+Use `@Observable` macro (not `ObservableObject`):
 
 ```swift
-// 声明
+// Declaration
 @MainActor
 @Observable
 final class QuotaViewModel {
@@ -277,51 +277,51 @@ final class QuotaViewModel {
     var authFiles: [AuthFile] = []
 }
 
-// 通过 @Environment 访问视图
+// View access via @Environment
 @Environment(QuotaViewModel.self) private var viewModel
 
-// 通过 @Bindable 双向绑定
+// Two-way bindings via @Bindable
 var body: some View {
     @Bindable var vm = viewModel
     Toggle("Auto Start", isOn: $vm.autoStart)
 }
 ```
 
-### 命名约定
+### Naming Conventions
 
-| 元素 | 约定 | 示例 |
+| Element | Convention | Examples |
 |---------|------------|----------|
-| **类型** | PascalCase | `AIProvider`, `QuotaViewModel`, `StatusBarManager` |
-| **属性** | camelCase | `authFiles`, `isLoading`, `proxyStatus` |
-| **方法** | camelCase | `refreshData()`, `startProxy()`, `toggleItem(_:)` |
-| **常量** | camelCase | `managementKey`, `warningThreshold` |
-| **枚举类型** | PascalCase | `AIProvider`, `AppMode`, `NavigationPage` |
-| **枚举案例** | camelCase | `case gemini`, `case claude`, `case quotaOnly` |
-| **文件名** | 匹配主要类型 | `QuotaViewModel.swift`, `CLIProxyManager.swift` |
+| **Types** | PascalCase | `AIProvider`, `QuotaViewModel`, `StatusBarManager` |
+| **Properties** | camelCase | `authFiles`, `isLoading`, `proxyStatus` |
+| **Methods** | camelCase | `refreshData()`, `startProxy()`, `toggleItem(_:)` |
+| **Constants** | camelCase | `managementKey`, `warningThreshold` |
+| **Enum Types** | PascalCase | `AIProvider`, `AppMode`, `NavigationPage` |
+| **Enum Cases** | camelCase | `case gemini`, `case claude`, `case quotaOnly` |
+| **File Names** | Match primary type | `QuotaViewModel.swift`, `CLIProxyManager.swift` |
 
-### 导入顺序
+### Import Order
 
-按以下顺序组织导入，组之间留空行：
+Organize imports in this order with blank lines between groups:
 
 ```swift
-// 1. 系统框架
+// 1. System frameworks
 import Foundation
 import SwiftUI
 import AppKit
 import ServiceManagement
 
-// 2. 可选框架的条件导入
+// 2. Conditional imports for optional frameworks
 #if canImport(Sparkle)
 import Sparkle
 #endif
 
-// 3. 本地模块（如果有）
-// (当前项目中无)
+// 3. Local modules (if any)
+// (Currently none in this project)
 ```
 
-### 类型定义
+### Type Definitions
 
-**具有原始值的枚举用于 API 兼容性**：
+**Enums with Raw Values for API Compatibility**:
 
 ```swift
 enum AIProvider: String, CaseIterable, Codable, Identifiable {
@@ -329,9 +329,9 @@ enum AIProvider: String, CaseIterable, Codable, Identifiable {
     case claude = "claude"
     case codex = "codex"
     case copilot = "github-copilot"
-
+    
     var id: String { rawValue }
-
+    
     var displayName: String {
         switch self {
         case .gemini: return "Gemini CLI"
@@ -343,7 +343,7 @@ enum AIProvider: String, CaseIterable, Codable, Identifiable {
 }
 ```
 
-**具有 CodingKeys 的 Codable 结构体用于 snake_case API**：
+**Codable Structs with CodingKeys for snake_case APIs**:
 
 ```swift
 struct AuthFile: Codable, Identifiable, Hashable, Sendable {
@@ -354,7 +354,7 @@ struct AuthFile: Codable, Identifiable, Hashable, Sendable {
     let runtimeOnly: Bool?
     let accountType: String?
     let createdAt: String?
-
+    
     enum CodingKeys: String, CodingKey {
         case id, name, provider
         case statusMessage = "status_message"
@@ -365,27 +365,27 @@ struct AuthFile: Codable, Identifiable, Hashable, Sendable {
 }
 ```
 
-### 视图结构
+### View Structure
 
-使用 `MARK: -` 注释组织视图：
+Organize views with `MARK: -` comments:
 
 ```swift
 struct DashboardScreen: View {
     @Environment(QuotaViewModel.self) private var viewModel
-
-    // MARK: - 计算属性
-
+    
+    // MARK: - Computed Properties
+    
     private var isSetupComplete: Bool {
         viewModel.proxyManager.isBinaryInstalled &&
         viewModel.proxyManager.proxyStatus.running
     }
-
+    
     private var totalAccounts: Int {
         viewModel.authFiles.count
     }
-
-    // MARK: - 主体
-
+    
+    // MARK: - Body
+    
     var body: some View {
         ScrollView {
             VStack(spacing: 16) {
@@ -396,9 +396,9 @@ struct DashboardScreen: View {
             .padding()
         }
     }
-
-    // MARK: - 子视图
-
+    
+    // MARK: - Subviews
+    
     private var headerSection: some View {
         HStack {
             Text("Dashboard")
@@ -406,20 +406,20 @@ struct DashboardScreen: View {
             Spacer()
         }
     }
-
+    
     private var statsSection: some View {
         // ...
     }
-
+    
     private var quickActionsSection: some View {
         // ...
     }
 }
 ```
 
-### 错误处理
+### Error Handling
 
-使用符合 `LocalizedError` 的自定义错误枚举：
+Use custom error enums conforming to `LocalizedError`:
 
 ```swift
 enum APIError: LocalizedError {
@@ -427,7 +427,7 @@ enum APIError: LocalizedError {
     case invalidResponse
     case httpError(Int)
     case decodingError(String)
-
+    
     var errorDescription: String? {
         switch self {
         case .invalidURL: return "Invalid URL"
@@ -438,28 +438,28 @@ enum APIError: LocalizedError {
     }
 }
 
-// ViewModel 中的使用
+// Usage in ViewModel
 func refreshData() async {
     do {
         self.authFiles = try await client.fetchAuthFiles()
     } catch {
-        // 存储以供 UI 显示
+        // Store for UI display
         self.errorMessage = error.localizedDescription
     }
 }
 ```
 
-### 本地化
+### Localization
 
-所有面向用户的字符串必须使用本地化：
+All user-facing strings must use localization:
 
 ```swift
-// 扩展方法使用
+// Extension method usage
 Text("nav.dashboard".localized())
 Label("action.refresh".localized(), systemImage: "arrow.clockwise")
 
-// 键格式：category.subcategory.item
-// 示例：
+// Key format: category.subcategory.item
+// Examples:
 // - nav.dashboard
 // - action.startProxy
 // - status.running
@@ -467,22 +467,22 @@ Label("action.refresh".localized(), systemImage: "arrow.clockwise")
 // - error.networkError
 ```
 
-### UserDefaults 使用
+### UserDefaults Usage
 
-在视图中使用 `@AppStorage`，在服务中使用 `UserDefaults.standard`：
+Use `@AppStorage` in views, `UserDefaults.standard` in services:
 
 ```swift
-// 在视图中 - 用于响应式属性
+// In Views - for reactive properties
 struct SettingsScreen: View {
     @AppStorage("autoStartProxy") private var autoStartProxy = false
     @AppStorage("loggingToFile") private var loggingToFile = true
-
+    
     var body: some View {
         Toggle("Auto Start", isOn: $autoStartProxy)
     }
 }
 
-// 在服务中 - 用于直接访问
+// In Services - for direct access
 final class CLIProxyManager {
     init() {
         let savedPort = UserDefaults.standard.integer(forKey: "proxyPort")
@@ -490,7 +490,7 @@ final class CLIProxyManager {
             self.proxyStatus.port = UInt16(savedPort)
         }
     }
-
+    
     var port: UInt16 {
         didSet {
             UserDefaults.standard.set(Int(newValue), forKey: "proxyPort")
@@ -499,28 +499,28 @@ final class CLIProxyManager {
 }
 ```
 
-### 颜色处理
+### Color Handling
 
-使用 `Models.swift` 中的十六进制颜色初始化器：
+Use hex color initializer from `Models.swift`:
 
 ```swift
 extension Color {
     init?(hex: String) {
         var hexSanitized = hex.trimmingCharacters(in: .whitespacesAndNewlines)
         hexSanitized = hexSanitized.replacingOccurrences(of: "#", with: "")
-
+        
         var rgb: UInt64 = 0
         guard Scanner(string: hexSanitized).scanHexInt64(&rgb) else { return nil }
-
+        
         let r = Double((rgb & 0xFF0000) >> 16) / 255.0
         let g = Double((rgb & 0x00FF00) >> 8) / 255.0
         let b = Double(rgb & 0x0000FF) / 255.0
-
+        
         self.init(red: r, green: g, blue: b)
     }
 }
 
-// 在 AIProvider 中使用
+// Usage in AIProvider
 var color: Color {
     switch self {
     case .gemini: return Color(hex: "4285F4") ?? .blue
@@ -530,49 +530,49 @@ var color: Color {
 }
 ```
 
-### 注释
+### Comments
 
-使用适当的注释风格：
+Use appropriate comment styles:
 
 ```swift
-// 单行实现注释
-let port: UInt16 = 8317  // 默认代理端口
+// Single-line implementation notes
+let port: UInt16 = 8317  // Default proxy port
 
-/// 公共 API 的文档注释
-/// - Parameter provider: 要认证的 AI 提供商
-/// - Returns: OAuth URL 响应或错误
+/// Documentation comments for public APIs
+/// - Parameter provider: The AI provider to authenticate
+/// - Returns: OAuth URL response or error
 func getOAuthURL(for provider: AIProvider) async throws -> OAuthURLResponse
 
-// MARK: - 部分标题
-// 用于组织代码部分
+// MARK: - Section Headers
+// Use to organize code sections
 
-// MARK: - 计算属性
-// MARK: - 主体
-// MARK: - 子视图
-// MARK: - 私有方法
+// MARK: - Computed Properties
+// MARK: - Body
+// MARK: - Subviews
+// MARK: - Private Methods
 
-// 避免明显的注释
-// 坏：计数器加 1
-// 好：（不言自明的代码无需注释）
+// Avoid obvious comments
+// BAD: Increment counter by 1
+// GOOD: (no comment needed for self-explanatory code)
 ```
 
 ---
 
-## 关键实现模式
+## Key Implementation Patterns
 
-### 异步数据刷新与并行请求
+### Async Data Refresh with Parallel Requests
 
 ```swift
 func refreshData() async {
     guard let client = apiClient else { return }
-
+    
     do {
-        // 并行异步请求
+        // Parallel async requests
         async let files = client.fetchAuthFiles()
         async let stats = client.fetchUsageStats()
         async let keys = client.fetchAPIKeys()
-
-        // 等待所有结果
+        
+        // Await all results
         self.authFiles = try await files
         self.usageStats = try await stats
         self.apiKeys = try await keys
@@ -584,17 +584,17 @@ func refreshData() async {
 }
 ```
 
-### 模式感知逻辑
+### Mode-Aware Logic
 
 ```swift
 func initialize() async {
     if modeManager.isQuotaOnlyMode {
-        // 仅配额模式：直接配额获取
+        // Quota-only mode: Direct quota fetching
         await loadDirectAuthFiles()
         await refreshQuotasDirectly()
         startQuotaOnlyAutoRefresh()
     } else {
-        // 完整模式：代理管理
+        // Full mode: Proxy management
         if autoStartProxy && proxyManager.isBinaryInstalled {
             await startProxy()
         }
@@ -602,27 +602,27 @@ func initialize() async {
 }
 ```
 
-### 进程管理
+### Process Management
 
 ```swift
 func start() async throws {
     guard isBinaryInstalled else {
         throw ProxyError.binaryNotFound
     }
-
+    
     isStarting = true
     defer { isStarting = false }
-
+    
     let process = Process()
     process.executableURL = URL(fileURLWithPath: binaryPath)
     process.arguments = ["-config", configPath]
-
-    // 设置环境
+    
+    // Set up environment
     var environment = ProcessInfo.processInfo.environment
     environment["TERM"] = "xterm-256color"
     process.environment = environment
-
-    // 终止处理程序
+    
+    // Termination handler
     process.terminationHandler = { terminatedProcess in
         let status = terminatedProcess.terminationStatus
         Task { @MainActor [weak self] in
@@ -632,13 +632,13 @@ func start() async throws {
             }
         }
     }
-
+    
     try process.run()
     self.process = process
-
-    // 等待启动
+    
+    // Wait for startup
     try await Task.sleep(nanoseconds: 1_500_000_000)
-
+    
     if process.isRunning {
         proxyStatus.running = true
     } else {
@@ -647,7 +647,7 @@ func start() async throws {
 }
 ```
 
-### 菜单栏集成与 NSHostingView
+### Menu Bar Integration with NSHostingView
 
 ```swift
 func updateStatusBar(
@@ -662,46 +662,46 @@ func updateStatusBar(
         removeStatusItem()
         return
     }
-
+    
     if statusItem == nil {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
     }
-
-    // 配置弹出框
+    
+    // Configure popover
     popover?.contentViewController = NSHostingController(rootView: menuContentProvider())
-
-    // 创建 SwiftUI 内容视图
+    
+    // Create SwiftUI content view
     let contentView: AnyView
     if !showQuota || !isRunning || items.isEmpty {
         contentView = AnyView(StatusBarDefaultView(isRunning: isRunning))
     } else {
         contentView = AnyView(StatusBarQuotaView(items: items, colorMode: colorMode))
     }
-
-    // 包装在 NSHostingView 中
+    
+    // Wrap in NSHostingView
     let hostingView = NSHostingView(rootView: contentView)
     hostingView.setFrameSize(hostingView.intrinsicContentSize)
-
-    // 添加到状态栏按钮
+    
+    // Add to status bar button
     let containerView = StatusBarContainerView(...)
     containerView.addSubview(hostingView)
     button.addSubview(containerView)
 }
 ```
 
-### OAuth 轮询模式
+### OAuth Polling Pattern
 
 ```swift
 private func pollOAuthStatus(state: String, provider: AIProvider) async {
     guard let client = apiClient else { return }
-
-    // 轮询最多 2 分钟（60 次迭代 × 2 秒）
+    
+    // Poll for up to 2 minutes (60 iterations × 2 seconds)
     for _ in 0..<60 {
         try? await Task.sleep(nanoseconds: 2_000_000_000)
-
+        
         do {
             let response = try await client.pollOAuthStatus(state: state)
-
+            
             switch response.status {
             case "ok":
                 oauthState = OAuthState(provider: provider, status: .success)
@@ -711,18 +711,18 @@ private func pollOAuthStatus(state: String, provider: AIProvider) async {
                 oauthState = OAuthState(provider: provider, status: .error, error: response.error)
                 return
             default:
-                continue  // 继续轮询
+                continue  // Keep polling
             }
         } catch {
-            continue  // 网络错误时重试
+            continue  // Retry on network errors
         }
     }
-
+    
     oauthState = OAuthState(provider: provider, status: .error, error: "OAuth timeout")
 }
 ```
 
-### 自动刷新任务模式
+### Auto-Refresh Task Pattern
 
 ```swift
 private var refreshTask: Task<Void, Never>?
@@ -731,7 +731,7 @@ private func startAutoRefresh() {
     refreshTask?.cancel()
     refreshTask = Task {
         while !Task.isCancelled {
-            try? await Task.sleep(nanoseconds: 15_000_000_000)  // 15 秒
+            try? await Task.sleep(nanoseconds: 15_000_000_000)  // 15 seconds
             await refreshData()
         }
     }
@@ -744,33 +744,33 @@ func stopProxy() {
 }
 ```
 
-### 通知节流模式
+### Notification Throttling Pattern
 
 ```swift
 func notifyQuotaLow(provider: String, account: String, remainingPercent: Double) {
     let key = "\(provider)_\(account)"
     let lastNotified = lastQuotaNotifications[key] ?? .distantPast
-
-    // 每小时仅通知一次
+    
+    // Only notify once per hour
     guard Date().timeIntervalSince(lastNotified) > 3600 else { return }
-
+    
     let content = UNMutableNotificationContent()
     content.title = "Low Quota Alert"
     content.body = "\(provider) account \(account) has \(Int(remainingPercent))% remaining"
     content.sound = .default
-
+    
     let request = UNNotificationRequest(
         identifier: "quota-\(key)",
         content: content,
         trigger: nil
     )
-
+    
     UNUserNotificationCenter.current().add(request)
     lastQuotaNotifications[key] = Date()
 }
 ```
 
-### 配置生成模式
+### Configuration Generation Pattern
 
 ```swift
 func generateConfiguration(
@@ -780,7 +780,7 @@ func generateConfiguration(
     storageOption: ConfigStorageOption = .jsonOnly,
     detectionService: AgentDetectionService
 ) async throws -> AgentConfigResult {
-
+    
     switch agent {
     case .claudeCode:
         return try await generateClaudeCodeConfig(config, mode: mode, storageOption: storageOption)
@@ -800,51 +800,51 @@ func generateConfiguration(
 
 ---
 
-## 测试指南
+## Testing Guidelines
 
-> **注意**: 此项目当前没有自动化测试。
+> **Note**: This project currently has no automated tests.
 
-实现功能时，请手动测试：
+When implementing features, test manually:
 
-1. **构建验证**:
+1. **Build Verification**:
    ```bash
    xcodebuild -project Quotio.xcodeproj -scheme Quotio -configuration Debug build
    ```
 
-2. **UI 测试**:
-   - 在 Xcode 中运行应用 (`Cmd + R`)
-   - 在浅色和深色模式下测试
-   - 验证所有屏幕正确渲染
+2. **UI Testing**:
+   - Run app in Xcode (`Cmd + R`)
+   - Test in both light and dark mode
+   - Verify all screens render correctly
 
-3. **菜单栏测试**:
-   - 检查图标正确显示
-   - 验证弹出框打开/关闭
-   - 测试配额显示更新
+3. **Menu Bar Testing**:
+   - Check icon displays correctly
+   - Verify popover opens/closes
+   - Test quota display updates
 
-4. **本地化测试**:
-   - 切换系统语言到越南语
-   - 验证所有字符串已翻译
+4. **Localization Testing**:
+   - Switch system language to Vietnamese
+   - Verify all strings are translated
 
-5. **模式测试**:
-   - 测试带代理的完整模式
-   - 测试不带代理的仅配额模式
-   - 测试模式切换
+5. **Mode Testing**:
+   - Test Full Mode with proxy
+   - Test Quota-Only Mode without proxy
+   - Test mode switching
 
 ---
 
-## 构建命令参考
+## Build Commands Reference
 
 ```bash
-# 在 Xcode 中打开项目
+# Open project in Xcode
 open Quotio.xcodeproj
 
-# 为开发构建 (Debug)
+# Build for development (Debug)
 xcodebuild -project Quotio.xcodeproj -scheme Quotio -configuration Debug build
 
-# 为发布构建 (未签名)
+# Build for release (unsigned)
 ./scripts/build.sh
 
-# 归档用于分发
+# Archive for distribution
 xcodebuild archive \
     -project Quotio.xcodeproj \
     -scheme Quotio \
@@ -852,6 +852,6 @@ xcodebuild archive \
     -archivePath build/Quotio.xcarchive \
     -destination "generic/platform=macOS"
 
-# 检查编译错误
+# Check for compile errors
 xcodebuild -project Quotio.xcodeproj -scheme Quotio -configuration Debug build 2>&1 | head -50
 ```
